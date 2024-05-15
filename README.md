@@ -80,4 +80,7 @@ git push -u origin <newBranch>
 ## Task4 github actions
 
 - Using github, navigate to the actions tab and configure "python application" but "Github actions" for this project.
-- 
+- Refactoring to use bandit
+	- Change "flake8" "bandit -r . -x test_\*.py" below "- name: Lint with bandit"
+	- Change all other instances of "flake8" to "bandit"
+
