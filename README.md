@@ -67,3 +67,9 @@ git branch -a
 ## Task2 git merge conflict
 
 Creating a conflict is easy, resolving them is hard.
+
+## Task3 git creating branches
+
+git branch <newBranch> <branchPoint>
+git checkout <newBranch>
+git push -u origin <newBranch>
