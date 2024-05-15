@@ -83,4 +83,5 @@ git push -u origin <newBranch>
 - Refactoring to use bandit
 	- Change "flake8" "bandit -r . -x test_\*.py" below "- name: Lint with bandit"
 	- Change all other instances of "flake8" to "bandit"
-
+- Change the line "uses: actions/setup-python\@v3" to "uses: actions/setuppython\@v5"
+- This will commit to main by default.
