@@ -63,3 +63,7 @@ You can now browse to the url http://localhost:8001/ and you should see the home
 
 Can list all the branches.
 git branch -a
+
+## git merge stuff
+
+How does I create conflict?
