@@ -56,3 +56,10 @@ You can now browse to the url http://localhost:8001/ and you should see the home
 
 ![Welcome page](WelcomePage.jpg)
 
+
+# Week 11 extension
+
+## git branch stuff
+
+Can list all the branches.
+git branch -a
