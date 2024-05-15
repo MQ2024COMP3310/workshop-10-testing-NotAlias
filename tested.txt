@@ -1,0 +1,130 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.3, pytest-8.2.0, pluggy-1.5.0
+rootdir: C:\Users\Adrian\OneDrive\Uni\2024S1_COMP3310\Workspace\workshop-10-testing-NotAlias
+collected 8 items
+
+test_app.py .F.F..FF                                                     [100%]
+
+================================== FAILURES ===================================
+______________________ TestWebApp.test_hashed_passwords _______________________
+
+self = <test_app.TestWebApp testMethod=test_hashed_passwords>
+
+    def test_hashed_passwords(self):
+        response = self.client.post('/signup', data = {
+            'email' : 'user@test.com',
+            'name' : 'test user',
+            'password' : 'test123'
+        }, follow_redirects = True)
+        assert response.status_code == 200
+        # should redirect to the login page
+        assert response.request.path == '/login'
+    
+        user = User.query.filter_by(email='user@test.com').first()
+        assert user is not None
+>       assert check_password_hash(user.password, 'test123')
+E       AssertionError: assert False
+E        +  where False = check_password_hash('test123', 'test123')
+E        +    where 'test123' = <User 1>.password
+
+test_app.py:74: AssertionError
+____________________ TestWebApp.test_no_access_to_profile _____________________
+
+self = <test_app.TestWebApp testMethod=test_no_access_to_profile>
+
+    def test_no_access_to_profile(self):
+        # TODO: Check that non-logged-in user should be redirected to /login
+>       assert False
+E       assert False
+
+test_app.py:40: AssertionError
+________________________ TestWebApp.test_sql_injection ________________________
+
+self = <test_app.TestWebApp testMethod=test_sql_injection>
+
+    def test_sql_injection(self):
+        response = self.client.post('/signup', data = {
+            'email' : 'user@test.com"; drop table user; -- ',
+            'name' : 'test user',
+            'password' : 'test123'
+        }, follow_redirects = True)
+>       assert response.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+test_app.py:83: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    project:app.py:838 Exception on /signup [POST]
+Traceback (most recent call last):
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\base.py", line 1971, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\default.py", line 919, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.ProgrammingError: You can only execute one statement at a time.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\OneDrive\Uni\2024S1_COMP3310\Workspace\workshop-10-testing-NotAlias\project\auth.py", line 43, in signup_post
+    user = db.session.execute(text('select * from user where email = "' + email +'"')).all()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\orm\scoping.py", line 778, in execute
+    return self._proxied.execute(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\orm\session.py", line 2306, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\orm\session.py", line 2200, in _execute_internal
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\base.py", line 1422, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\sql\elements.py", line 514, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\base.py", line 1644, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\base.py", line 1850, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\base.py", line 1990, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\base.py", line 2357, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\base.py", line 1971, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\Adrian\AppData\Local\Programs\Python\Python312\Lib\site-packages\sqlalchemy\engine\default.py", line 919, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (sqlite3.ProgrammingError) You can only execute one statement at a time.
+[SQL: select * from user where email = "user@test.com"; drop table user; -- "]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+______________________ TestWebApp.test_xss_vulnerability ______________________
+
+self = <test_app.TestWebApp testMethod=test_xss_vulnerability>
+
+    def test_xss_vulnerability(self):
+        # TODO: Can we store javascript tags in the username field?
+>       assert False
+E       assert False
+
+test_app.py:88: AssertionError
+=========================== short test summary info ===========================
+FAILED test_app.py::TestWebApp::test_hashed_passwords - AssertionError: asser...
+FAILED test_app.py::TestWebApp::test_no_access_to_profile - assert False
+FAILED test_app.py::TestWebApp::test_sql_injection - assert 500 == 200
+FAILED test_app.py::TestWebApp::test_xss_vulnerability - assert False
+========================= 4 failed, 4 passed in 0.97s =========================

@@ -34,9 +34,12 @@ class TestWebApp(unittest.TestCase):
         response = self.client.get('/signup')
         assert response.status_code == 200
 
+    # TODO fixit ################################
     def test_no_access_to_profile(self):
         # TODO: Check that non-logged-in user should be redirected to /login
-        assert False
+        response = self.client.get('/profile', follow_redirects = True)
+        assert response.status_code == 200
+        assert response.request.path == "/login"
 
     def test_register_user(self):
         response = self.client.post('/signup', data = {
@@ -57,6 +60,7 @@ class TestWebApp(unittest.TestCase):
         html = response.get_data(as_text = True)
         assert 'test user' in html
 
+    # TODO fixit
     def test_hashed_passwords(self):
         response = self.client.post('/signup', data = {
             'email' : 'user@test.com',
@@ -71,6 +75,7 @@ class TestWebApp(unittest.TestCase):
         assert user is not None
         assert check_password_hash(user.password, 'test123')
 
+    # TODO fixit
     def test_sql_injection(self):
         response = self.client.post('/signup', data = {
             'email' : 'user@test.com"; drop table user; -- ',
@@ -79,6 +84,7 @@ class TestWebApp(unittest.TestCase):
         }, follow_redirects = True)
         assert response.status_code == 200 
 
+    # TODO fixit
     def test_xss_vulnerability(self):
         # TODO: Can we store javascript tags in the username field?
         assert False
