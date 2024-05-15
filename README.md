@@ -72,4 +72,7 @@ Creating a conflict is easy, resolving them is hard.
 
 git branch <newBranch> <branchPoint>
 git checkout <newBranch>
+
+Make sure 3 branches are created locally, unless the local branch is explicity added to remote it will only be local.
+
 git push -u origin <newBranch>
