@@ -59,11 +59,11 @@ You can now browse to the url http://localhost:8001/ and you should see the home
 
 # Week 11 extension
 
-## git branch stuff
+## Task1 git branch
 
 Can list all the branches.
 git branch -a
 
-## git merge stuff
+## Task2 git merge conflict
 
-How does I create conflict?
+Creating a conflict is easy, resolving them is hard.
