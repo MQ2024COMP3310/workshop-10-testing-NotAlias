@@ -76,3 +76,8 @@ git checkout <newBranch>
 Make sure 3 branches are created locally, unless the local branch is explicity added to remote it will only be local.
 
 git push -u origin <newBranch>
+
+## Task4 github actions
+
+- Using github, navigate to the actions tab and configure "python application" but "Github actions" for this project.
+- 
